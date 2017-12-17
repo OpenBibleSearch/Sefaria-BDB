@@ -178,6 +178,9 @@ def convert_bwhebb_string(orig_str):
 
 
 def convert_web_encoded_bwhebb_string(web_encoded_str):
+    if not web_encoded_str:
+        return u""
+    web_encoded_str = web_encoded_str.strip()
     decoded_string = h.unescape(web_encoded_str)
     backwards_unicode = convert_bwhebb_string(decoded_string)
 
@@ -185,6 +188,11 @@ def convert_web_encoded_bwhebb_string(web_encoded_str):
     # BUT the vowels are written *after* the character, so it's not fully backwards
     # So we convert from "LTR top to bottom" -> "RTL top to bottom"
     newstr = "".join(re.findall(ur"[\u05d0-\u05ea][^\u05d0-\u05ea]*", backwards_unicode)[::-1])
-    assert len(newstr) == len(backwards_unicode), u"{} converted to {} then  {}".format(decoded_string, backwards_unicode, newstr)
+    if not len(newstr) == len(backwards_unicode):
+        print "Unexpected string length: "
+        print decoded_string
+        print backwards_unicode
+        print newstr
+        print "\n"
     return newstr
 
