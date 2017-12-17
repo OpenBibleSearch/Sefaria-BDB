@@ -1,3 +1,4 @@
 data/lexicon
 node_modules
 *.pyc
+.idea
